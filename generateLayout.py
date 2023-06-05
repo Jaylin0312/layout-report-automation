@@ -1,6 +1,7 @@
 import json
 import copy
 
+
 def is_empty(value):
     if isinstance(value, dict):
         return len(value) == 0
@@ -11,9 +12,10 @@ def is_empty(value):
     else:
         return False
 
+
 def check_empty_values(json_data, res):
     for key, value in json_data.items():
-        if is_empty(value):
+        if is_empty(value) or value == "":
             if key not in res:
                 res.append(key)
         elif isinstance(value, dict):
@@ -42,9 +44,10 @@ def remove_fields(json_data, elem):
                 modified_json_data.append(modified_item)
     else:
         # Create a deep copy for non-dict, non-list values
-        modified_json_data = copy.deepcopy(json_data)  
-    
+        modified_json_data = copy.deepcopy(json_data)
+
     return modified_json_data
+
 
 def check_file(json_data, elem, f):
     modified_json_data = remove_fields(json_data, elem)
@@ -53,20 +56,17 @@ def check_file(json_data, elem, f):
 
 def main():
     res = []
-    count = 1
 
     # Load the JSON data from a layout file
-    with open('layouts/layout0.json', 'r') as f:
+    with open("layouts/layout.json", "r") as f:
         json_data = json.load(f)
 
     # Call the function to check for empty values and store in res
     res = check_empty_values(json_data, res)
-    print(res)
 
     for elem in res:
-        with open(f"layouts/layout{count}.json", "w") as f:
+        with open(f"layouts/layout_{elem}.json", "w") as f:
             check_file(json_data, elem, f)
         f.close()
-        count += 1
 
-    
+    return res

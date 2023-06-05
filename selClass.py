@@ -31,7 +31,7 @@ class SelCore:
             raise Exception(f"Time out waiting for element {element}")
         return self.driver.find_element(locator, element)
 
-    def login(self, args="username password"):
+    def login(self, args="demo demo123"):
         username = args.split()[0].strip()
         password = args.split()[1].strip()
         self.logger.debug(
@@ -86,10 +86,10 @@ class SelCore:
         screenshot_path = os.path.join(screenshot_dir, args)
         self.driver.save_screenshot(screenshot_path)
 
-    def import_layout(self, f: str = "", counter: int = 0):
+    def import_layout(self, f: str = "", elem: str = ""):
         # Locate the textarea
         textarea = self.getitem("XPATH //textarea")
-        self.logger.debug(f"Importing layout from {f} file...")
+        self.logger.debug(f"Importing layout from {elem} file...")
         # Read the layout from layout file
         layout = f.read()
         if len(layout) <= 0:
@@ -104,5 +104,5 @@ class SelCore:
         # Click OK
         confirm_button = self.getitem("XPATH //button[contains(text(), 'OK')]")
         self.click(confirm_button)
-        time.sleep(3)
-        self.screenshot(f"layout{counter}.png")
+        time.sleep(10)
+        self.screenshot(f"screenshot_{elem}.png")
